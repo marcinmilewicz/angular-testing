@@ -1,16 +1,19 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { BehaviorSubject, merge, Observable, of } from 'rxjs';
+import { Component, Input } from '@angular/core';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { FullName } from '../hello.model';
 import { HelloApiService } from '../hello-api.service';
 import { share, switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-full-name-list[name]',
-  templateUrl: './full-name-list.component.html',
-  styleUrls: ['./full-name-list.component.scss'],
+  template: ` <ul *ngIf="fullNames$ | async as names">
+    <li *ngFor="let fullName of names; trackBy: trackByFn">
+      FirstName: {{ fullName.firstName }} | LastName: {{ fullName.lastName }}
+    </li>
+  </ul>`,
 })
-export class FullNameListComponent implements OnInit {
-  initName$: BehaviorSubject<string> = new BehaviorSubject<string>('');
+export class FullNameListComponent {
+  private readonly initName$: BehaviorSubject<string> = new BehaviorSubject<string>('');
 
   @Input() title = '';
   @Input() set name(value: string) {
@@ -25,12 +28,6 @@ export class FullNameListComponent implements OnInit {
       share()
     );
   }
-
-  ngOnInit(): void {
-    this.initMethod();
-  }
-
-  initMethod(): void {}
 
   trackByFn(index: number): number {
     return index;

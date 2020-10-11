@@ -1,5 +1,0 @@
-<ul *ngIf="fullNames$ | async as names">
-  <li *ngFor="let fullName of names; trackBy: trackByFn">
-    FirstName: {{ fullName.firstName }} | LastName: {{ fullName.lastName }}
-  </li>
-</ul>
